@@ -2,8 +2,9 @@
 
     <div class="container p-4 mt-3 mb-3 shadow-lg bg-light rounded">
 
-        <h1 class="text-center mb-1">Todos os Personagens</h1>
-        <h4 class="text-center mb-4">Total: <span class="badge badge-dark">{{ $characters['info']['count'] }}</span></h4>
+        <h1 class="text-center mb-1">Personagens (Filtro)</h1>
+        <h4 class="text-center mb-4">Total: <span class="badge badge-dark">{{ $characters['info']['count'] }}</span>
+        </h4>
 
         <div class="row">
             @foreach ($characters['results'] as $data)
@@ -14,7 +15,9 @@
                             <h5 class="card-title text-center">{{ $data['name'] }}</h5>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item <?= $data['status'] == ('Alive') ? 'text-success' : '', $data['status'] == ('Dead') ? 'text-danger' : '' ?>">Status: {{ $data['status'] }}</li>
+                            <li
+                                class="list-group-item <?= $data['status'] == 'Alive' ? 'text-success' : '', $data['status'] == 'Dead' ? 'text-danger' : '' ?>">
+                                Status: {{ $data['status'] }}</li>
                             <li class="list-group-item">Espécie: {{ $data['species'] }}</li>
                             <li class="list-group-item">Tipo: {{ $data['type'] }}</li>
                             <li class="list-group-item">Gênero: {{ $data['gender'] }}</li>
@@ -30,13 +33,18 @@
             @endforeach
         </div>
 
+        <?php
+            $parametersNext = Str::after($characters['info']['next'], '/?');
+            $parametersPrev = Str::after($characters['info']['prev'], '/?');
+        ?>
+    
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?= !isset($characters['info']['prev']) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="{{ route('characters.all', $prev) }}" tabindex="-1">Anterior</a>
+                    <a class="page-link" href="{{ route('characters.filterPag', $parametersPrev) }}" tabindex="-1">Anterior</a>
                 </li>
                 <li class="page-item <?= !isset($characters['info']['next']) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="{{ route('characters.all', $next) }}">Próximo</a>
+                    <a class="page-link" href="{{ route('characters.filterPag', $parametersNext) }}">Próximo</a>
                 </li>
             </ul>
         </nav>
